@@ -20,7 +20,6 @@ class LoginForm extends Component {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(this.onLoginSuccess.bind(this))
-      // fail
       .catch(() => {
         // create account
         firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -28,6 +27,13 @@ class LoginForm extends Component {
           // component re-renders and shows error message - if user fails to sign in AND fails to create account
           .catch(this.onLoginFail.bind(this));
       });
+  };
+
+  onLoginFail() {
+    this.setState({
+      error: 'Authentication Failed',
+      loading: false
+    });
   };
 
   onLoginSuccess() {
@@ -39,11 +45,6 @@ class LoginForm extends Component {
     });
   };
 
-  onLoginFail() {
-    this.setState({ error: 'Authentication Failed', loading: false });
-  };
-
-
   renderButton() {
     if (this.state.loading) {
       return <Spinner size="small" />;
@@ -53,7 +54,7 @@ class LoginForm extends Component {
       <Button onPress={this.onButtonPress.bind(this)}>
         Log In
       </Button>
-    )
+    );
   }
 
   render() {
@@ -73,7 +74,7 @@ class LoginForm extends Component {
             placeholder="password"
             label="Password"
             value={this.state.password}
-            onChangeText={password => this.setState({ password})}
+            onChangeText={password => this.setState({ password })}
           />
         </CardSection>
 
